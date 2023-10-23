@@ -397,6 +397,53 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrMsg"      
+    delete:
+      tags:
+        - attempts
+      parameters:
+        - name: "Auth-Token"
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: attempt_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attempt'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrMsg"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrMsg"
+        "500":
+          description: internal server err
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrMsg"
+
 components:
   schemas:
     ErrMsg:
