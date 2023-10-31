@@ -1,0 +1,387 @@
+openapi: 3.0.1
+info:
+  title: Poller backend REST API
+  version: 1.0.0
+
+tags:
+  - name: Polls management
+  - name: Attempts management
+  - name: Attempts management (service)
+    description: For service use only
+
+paths:
+  /poll:
+    post:
+      tags: [Polls management]
+      description: Add new poll
+      parameters:
+        - name: "X-Auth-Token"
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePollRequest'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Poll'
+        '400':
+          $ref: "#/components/responses/400"
+        '403':
+          $ref: "#/components/responses/403"
+        '500':
+          $ref: "#/components/responses/500"
+    get:
+      tags: [Polls management]
+      description: Get all exsisting polls
+      parameters:
+        - name: "X-Auth-Token"
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Poll'
+        '400':
+          $ref: "#/components/responses/400"
+        '403':
+          $ref: "#/components/responses/403"
+        '500':
+          $ref: "#/components/responses/500"
+  /poll/{id}:
+    get:
+      tags: [Polls management]
+      description: Get exsisting poll
+      parameters:
+        - name: "X-Auth-Token"
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Poll'
+        '400':
+          $ref: "#/components/responses/400"
+        '403':
+          $ref: "#/components/responses/403"
+        '500':
+          $ref: "#/components/responses/500"
+    delete:
+      tags: [Polls management]
+      description: Delete exsisting poll
+      parameters:
+        - name: "X-Auth-Token"
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Poll'
+        '400':
+          $ref: "#/components/responses/400"
+        '403':
+          $ref: "#/components/responses/403"
+        '500':
+          $ref: "#/components/responses/500"
+  /attempt/{poll_id}:
+    get:
+      tags: [Attempts management]
+      description: Get all exsisting attempts for poll
+      parameters:
+        - name: "X-Auth-Token"
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attempt'
+        '400':
+          $ref: "#/components/responses/400"
+        '403':
+          $ref: "#/components/responses/403"
+        '500':
+          $ref: "#/components/responses/500"
+    delete:
+      tags: [Attempts management]
+      description: Delete all exsisting attempts for poll
+      parameters:
+        - name: "X-Auth-Token"
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attempt'
+        '400':
+          $ref: "#/components/responses/400"
+        '403':
+          $ref: "#/components/responses/403"
+        '500':
+          $ref: "#/components/responses/500"
+  /attempt/{poll_id}/{attempt_id}:
+    get:
+      tags: [Attempts management]
+      description: Get exsisting attempt
+      parameters:
+        - name: "X-Auth-Token"
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: attempt_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attempt'
+        '400':
+          $ref: "#/components/responses/400"
+        '403':
+          $ref: "#/components/responses/403"
+        '500':
+          $ref: "#/components/responses/500"
+    delete:
+      tags: [Attempts management]
+      description: Delete exsisting attempt
+      parameters:
+        - name: "X-Auth-Token"
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: attempt_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attempt'
+        '400':
+          $ref: "#/components/responses/400"
+        '403':
+          $ref: "#/components/responses/403"
+        '500':
+          $ref: "#/components/responses/500"
+  /prune_attempts:
+    delete:
+      tags: ["Attempts management (service)"]
+      description: Delete all attempts, which poll no longer exists
+      parameters:
+        - name: "X-Auth-Token"
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attempt'
+        '400':
+          $ref: "#/components/responses/400"
+        '403':
+          $ref: "#/components/responses/403"
+        '500':
+          $ref: "#/components/responses/500"
+
+components:
+  responses:
+    '400':
+      description: bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrMsg'
+    '403':
+      description: bad auth token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrMsg'
+    '500':
+      description: bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrMsg'
+
+  schemas:
+    ErrMsg:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: something went wrong
+    CreateAttemptRequest:
+      type: object
+      required: [poll_id, answers]
+      properties:
+        poll_id:
+          type: string
+          format: uuid
+        answers:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/AttemptAnswer'
+    Attempt:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CreateAttemptRequest'
+        - type: object
+          required: [id, ts]
+          properties:
+            id:
+              type: string
+              format: uuid
+            ts:
+              type: string
+              format: date-time
+    AttemptAnswer:
+      type: object
+      required: [question, answers]
+      properties:
+        question:
+          $ref: '#/components/schemas/Question'
+        answers:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Answer'
+    CreatePollRequest:
+      type: object
+      required: [title, questions]
+      properties:
+        title:
+          type: string
+          example: Poll for pizza lovers
+        questions:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Question'
+    Poll:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CreatePollRequest'
+        - type: object
+          required: [id, time_created]
+          properties:
+            id:
+              type: string
+              format: uuid
+            time_created:
+              type: string
+              format: date-time
+    Question:
+      type: object
+      required: [text, answers]
+      properties:
+        text:
+          type: string
+          example: "Do you love pizza?"
+        answers:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Answer'
+    Answer:
+      type: object
+      required: [text]
+      properties:
+        text:
+          type: string
+          example: "Yes of course"
+
