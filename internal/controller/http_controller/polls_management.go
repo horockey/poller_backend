@@ -11,13 +11,13 @@ import (
 	"github.com/horockey/poller_backend/internal/controller/http_controller/dto"
 )
 
-func (ctrl *httpController) PollGet(w http.ResponseWriter, req *http.Request) {
+func (ctrl *httpController) pollGet(w http.ResponseWriter, req *http.Request) {
 	if err := ctrl.checkAuthToken(req); err != nil {
 		resErr := fmt.Errorf("checking auth token: %w", err)
 
 		if err := http_helpers.RespondWithErr(
 			w,
-			http.StatusBadRequest,
+			http.StatusForbidden,
 			resErr,
 		); err != nil {
 			resErr = errors.Join(resErr, fmt.Errorf("responing: %w", err))
@@ -54,13 +54,13 @@ func (ctrl *httpController) PollGet(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (ctrl *httpController) PollIdDelete(w http.ResponseWriter, req *http.Request) {
+func (ctrl *httpController) pollIdDelete(w http.ResponseWriter, req *http.Request) {
 	if err := ctrl.checkAuthToken(req); err != nil {
 		resErr := fmt.Errorf("checking auth token: %w", err)
 
 		if err := http_helpers.RespondWithErr(
 			w,
-			http.StatusBadRequest,
+			http.StatusForbidden,
 			resErr,
 		); err != nil {
 			resErr = errors.Join(resErr, fmt.Errorf("responing: %w", err))
@@ -114,13 +114,13 @@ func (ctrl *httpController) PollIdDelete(w http.ResponseWriter, req *http.Reques
 	}
 }
 
-func (ctrl *httpController) PollIdGet(w http.ResponseWriter, req *http.Request) {
+func (ctrl *httpController) pollIdGet(w http.ResponseWriter, req *http.Request) {
 	if err := ctrl.checkAuthToken(req); err != nil {
 		resErr := fmt.Errorf("checking auth token: %w", err)
 
 		if err := http_helpers.RespondWithErr(
 			w,
-			http.StatusBadRequest,
+			http.StatusForbidden,
 			resErr,
 		); err != nil {
 			resErr = errors.Join(resErr, fmt.Errorf("responing: %w", err))
@@ -174,13 +174,13 @@ func (ctrl *httpController) PollIdGet(w http.ResponseWriter, req *http.Request) 
 	}
 }
 
-func (ctrl *httpController) PollPost(w http.ResponseWriter, req *http.Request) {
+func (ctrl *httpController) pollPost(w http.ResponseWriter, req *http.Request) {
 	if err := ctrl.checkAuthToken(req); err != nil {
 		resErr := fmt.Errorf("checking auth token: %w", err)
 
 		if err := http_helpers.RespondWithErr(
 			w,
-			http.StatusBadRequest,
+			http.StatusForbidden,
 			resErr,
 		); err != nil {
 			resErr = errors.Join(resErr, fmt.Errorf("responing: %w", err))
@@ -198,7 +198,7 @@ func (ctrl *httpController) PollPost(w http.ResponseWriter, req *http.Request) {
 
 		if err := http_helpers.RespondWithErr(
 			w,
-			http.StatusInternalServerError,
+			http.StatusBadRequest,
 			resErr,
 		); err != nil {
 			resErr = errors.Join(resErr, fmt.Errorf("responing: %w", err))

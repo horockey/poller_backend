@@ -17,7 +17,7 @@ type Poll struct {
 func NewPoll(p *model.Poll) *Poll {
 	questions := make([]*Question, len(p.Questions))
 	for _, q := range p.Questions {
-		questions = append(questions, NewQuestion(q))
+		questions = append(questions, newQuestion(q))
 	}
 
 	return &Poll{

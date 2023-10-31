@@ -6,7 +6,7 @@ type Answer struct {
 	Text string `json:"text"`
 }
 
-func NewAnswer(a *model.Answer) *Answer {
+func newAnswer(a *model.Answer) *Answer {
 	return &Answer{
 		Text: a.Text,
 	}

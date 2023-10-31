@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/horockey/poller_backend/internal/model"
@@ -11,11 +12,6 @@ type Attempt struct {
 	Ts      string           `json:"ts"`
 	PollID  string           `json:"poll_id"`
 	Answers []*AttemptAnswer `json:"answers"`
-}
-
-type AttemptAnswer struct {
-	Question *Question `json:"question"`
-	Answers  []*Answer `json:"answers"`
 }
 
 func NewAttempts(ats []*model.Attempt) []*Attempt {
@@ -42,14 +38,21 @@ func NewAttempt(a *model.Attempt) *Attempt {
 	}
 }
 
-func newAttemptAnswer(a *model.AttemptAnswer) *AttemptAnswer {
-	answers := make([]*Answer, len(a.Answers))
-	for _, ans := range a.Answers {
-		answers = append(answers, NewAnswer(ans))
+func (a *Attempt) ToModel() (*model.Attempt, error) {
+	ts, err := time.Parse(time.RFC3339, a.Ts)
+	if err != nil {
+		return nil, fmt.Errorf("parsing ts: %w", err)
 	}
 
-	return &AttemptAnswer{
-		Question: NewQuestion(a.Question),
-		Answers:  answers,
+	answers := make([]*model.AttemptAnswer, len(a.Answers))
+	for _, ans := range a.Answers {
+		answers = append(answers, ans.ToModel())
 	}
+
+	return &model.Attempt{
+		ID:      a.ID,
+		Ts:      ts,
+		PollID:  a.PollID,
+		Answers: answers,
+	}, nil
 }

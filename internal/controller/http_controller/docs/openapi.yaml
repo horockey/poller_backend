@@ -120,6 +120,40 @@ paths:
         '500':
           $ref: "#/components/responses/500"
   /attempt/{poll_id}:
+    post:
+      tags: [Attempts management]
+      description: Add new attempt
+      parameters:
+        - name: "X-Auth-Token"
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAttemptRequest'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attempt'
+        '400':
+          $ref: "#/components/responses/400"
+        '403':
+          $ref: "#/components/responses/403"
+        '500':
+          $ref: "#/components/responses/500"
+
     get:
       tags: [Attempts management]
       description: Get all exsisting attempts for poll

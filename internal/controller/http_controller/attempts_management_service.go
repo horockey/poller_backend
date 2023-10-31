@@ -9,13 +9,13 @@ import (
 	"github.com/horockey/poller_backend/internal/controller/http_controller/dto"
 )
 
-func (ctrl *httpController) PruneAttemptsDelete(w http.ResponseWriter, req *http.Request) {
+func (ctrl *httpController) pruneAttemptsDelete(w http.ResponseWriter, req *http.Request) {
 	if err := ctrl.checkAuthToken(req); err != nil {
 		resErr := fmt.Errorf("checking auth token: %w", err)
 
 		if err := http_helpers.RespondWithErr(
 			w,
-			http.StatusBadRequest,
+			http.StatusForbidden,
 			resErr,
 		); err != nil {
 			resErr = errors.Join(resErr, fmt.Errorf("responing: %w", err))

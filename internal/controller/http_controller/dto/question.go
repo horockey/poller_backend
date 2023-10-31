@@ -7,10 +7,10 @@ type Question struct {
 	Answers []*Answer `json:"answers"`
 }
 
-func NewQuestion(q *model.Question) *Question {
+func newQuestion(q *model.Question) *Question {
 	answers := make([]*Answer, len(q.Answers))
 	for _, ans := range q.Answers {
-		answers = append(answers, NewAnswer(ans))
+		answers = append(answers, newAnswer(ans))
 	}
 
 	return &Question{
