@@ -50,7 +50,7 @@ func (uc *pollsManagement) Get(id string) (*model.Poll, error) {
 func (uc *pollsManagement) GetAll() ([]*model.Poll, error) {
 	ps, err := uc.repo.GetAll()
 	if err != nil {
-		return nil, fmt.Errorf("getting poll from repo: %w", err)
+		return nil, fmt.Errorf("getting polls from repo: %w", err)
 	}
 
 	for _, p := range ps {
@@ -67,7 +67,7 @@ func (uc *pollsManagement) GetAll() ([]*model.Poll, error) {
 func (uc *pollsManagement) Add(poll *model.Poll) (*model.Poll, error) {
 	p, err := uc.repo.Add(poll)
 	if err != nil {
-		return nil, fmt.Errorf("getting poll from repo: %w", err)
+		return nil, fmt.Errorf("adding poll to repo: %w", err)
 	}
 
 	if err := uc.ev.Send(p, event.ActionRead); err != nil {
@@ -82,7 +82,7 @@ func (uc *pollsManagement) Add(poll *model.Poll) (*model.Poll, error) {
 func (uc *pollsManagement) Delete(id string) (*model.Poll, error) {
 	p, err := uc.repo.Delete(id)
 	if err != nil {
-		return nil, fmt.Errorf("getting poll from repo: %w", err)
+		return nil, fmt.Errorf("deleting poll from repo: %w", err)
 	}
 
 	if err := uc.ev.Send(p, event.ActionRead); err != nil {

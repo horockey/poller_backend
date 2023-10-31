@@ -67,7 +67,7 @@ func (uc *attemptsManagement) GetAllForPoll(pollId string) ([]*model.Attempt, er
 func (uc *attemptsManagement) Add(a *model.Attempt) (*model.Attempt, error) {
 	at, err := uc.repo.Add(a)
 	if err != nil {
-		return nil, fmt.Errorf("adding attempt from repo: %w", err)
+		return nil, fmt.Errorf("adding attempt to repo: %w", err)
 	}
 
 	if err := uc.ev.Send(at, event.ActionCreate); err != nil {
