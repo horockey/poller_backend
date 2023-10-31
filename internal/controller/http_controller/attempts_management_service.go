@@ -29,7 +29,7 @@ func (ctrl *httpController) PruneAttemptsDelete(w http.ResponseWriter, req *http
 
 	ats, err := ctrl.attempts.Prune()
 	if err != nil {
-		resErr := fmt.Errorf("prunning attempts: %w", err)
+		resErr := fmt.Errorf("calling usecase: %w", err)
 
 		if err := http_helpers.RespondWithErr(
 			w,

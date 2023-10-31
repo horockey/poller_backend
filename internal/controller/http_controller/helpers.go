@@ -9,8 +9,10 @@ import (
 )
 
 const (
-	authTokenHeader string        = "X-Auth-Token"
-	maxTimeDiff     time.Duration = time.Second * 5
+	authTokenHeader    string        = "X-Auth-Token"
+	pollIDParamName    string        = "poll_id"
+	attemptIDParamName string        = "attempt_id"
+	maxTimeDiff        time.Duration = time.Second * 5
 )
 
 func (ctrl *httpController) checkAuthToken(req *http.Request) error {

@@ -60,13 +60,13 @@ func (ctrl *httpController) newRouter() *mux.Router {
 		{
 			"PollIdDelete",
 			http.MethodDelete,
-			"/poll/{id}",
+			"/poll/{poll_id}",
 			ctrl.PollIdDelete,
 		},
 		{
 			"PollIdGet",
 			http.MethodGet,
-			"/poll/{id}",
+			"/poll/{poll_id}",
 			ctrl.PollIdGet,
 		},
 		{

@@ -62,7 +62,7 @@ paths:
           $ref: "#/components/responses/403"
         '500':
           $ref: "#/components/responses/500"
-  /poll/{id}:
+  /poll/{poll_id}:
     get:
       tags: [Polls management]
       description: Get exsisting poll
@@ -72,7 +72,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: id
+        - name: poll_id
           in: path
           required: true
           schema:
@@ -100,7 +100,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: id
+        - name: poll_id
           in: path
           required: true
           schema:

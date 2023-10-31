@@ -11,3 +11,9 @@ func NewAnswer(a *model.Answer) *Answer {
 		Text: a.Text,
 	}
 }
+
+func (a *Answer) ToModel() *model.Answer {
+	return &model.Answer{
+		Text: a.Text,
+	}
+}

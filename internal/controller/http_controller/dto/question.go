@@ -18,3 +18,15 @@ func NewQuestion(q *model.Question) *Question {
 		Answers: answers,
 	}
 }
+
+func (q *Question) ToModel() *model.Question {
+	answers := make([]*model.Answer, len(q.Answers))
+	for _, ans := range q.Answers {
+		answers = append(answers, ans.ToModel())
+	}
+
+	return &model.Question{
+		Text:    q.Text,
+		Answers: answers,
+	}
+}
