@@ -1,11 +1,14 @@
 package http_controller
 
 import (
+	"embed"
 	"net/http"
-	"strings"
 
 	"github.com/gorilla/mux"
 )
+
+//go:embed docs/*
+var docs embed.FS
 
 type Route struct {
 	Name        string
@@ -18,65 +21,57 @@ type Routes []Route
 
 func (ctrl *httpController) newRouter() *mux.Router {
 	routes := Routes{
-		Route{
+		{
 			"AttemptPollIdAttemptIdDelete",
-			strings.ToUpper("Delete"),
+			http.MethodDelete,
 			"/attempt/{poll_id}/{attempt_id}",
 			ctrl.AttemptPollIdAttemptIdDelete,
 		},
-
-		Route{
+		{
 			"AttemptPollIdAttemptIdGet",
-			strings.ToUpper("Get"),
+			http.MethodGet,
 			"/attempt/{poll_id}/{attempt_id}",
 			ctrl.AttemptPollIdAttemptIdGet,
 		},
-
-		Route{
+		{
 			"AttemptPollIdDelete",
-			strings.ToUpper("Delete"),
+			http.MethodDelete,
 			"/attempt/{poll_id}",
 			ctrl.AttemptPollIdDelete,
 		},
-
-		Route{
+		{
 			"AttemptPollIdGet",
-			strings.ToUpper("Get"),
+			http.MethodGet,
 			"/attempt/{poll_id}",
 			ctrl.AttemptPollIdGet,
 		},
-
-		Route{
+		{
 			"PruneAttemptsDelete",
-			strings.ToUpper("Delete"),
+			http.MethodDelete,
 			"/prune_attempts",
 			ctrl.PruneAttemptsDelete,
 		},
-
-		Route{
+		{
 			"PollGet",
-			strings.ToUpper("Get"),
+			http.MethodGet,
 			"/poll",
 			ctrl.PollGet,
 		},
-
-		Route{
+		{
 			"PollIdDelete",
-			strings.ToUpper("Delete"),
+			http.MethodDelete,
 			"/poll/{id}",
 			ctrl.PollIdDelete,
 		},
-
-		Route{
+		{
 			"PollIdGet",
-			strings.ToUpper("Get"),
+			http.MethodGet,
 			"/poll/{id}",
 			ctrl.PollIdGet,
 		},
-
-		Route{
+		{
 			"PollPost",
-			strings.ToUpper("Post"),
+			http.MethodPost,
 			"/poll",
 			ctrl.PollPost,
 		},
@@ -90,6 +85,12 @@ func (ctrl *httpController) newRouter() *mux.Router {
 			Name(route.Name).
 			Handler(route.HandlerFunc)
 	}
+
+	router.
+		Methods(http.MethodGet).
+		Path("/").
+		Name("Docs").
+		Handler(http.FileServer(http.FS(docs)))
 
 	return router
 }
