@@ -3,6 +3,7 @@ module github.com/horockey/poller_backend
 go 1.21.3
 
 require (
+	github.com/google/uuid v1.4.0
 	github.com/gorilla/mux v1.8.0
 	github.com/horockey/go-toolbox v1.3.0
 	github.com/nats-io/nats.go v1.31.0

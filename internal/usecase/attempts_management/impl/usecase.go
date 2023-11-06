@@ -110,20 +110,3 @@ func (uc *attemptsManagement) DeleteAllForPoll(pollId string) ([]*model.Attempt,
 
 	return ats, nil
 }
-
-func (uc *attemptsManagement) Prune() ([]*model.Attempt, error) {
-	ats, err := uc.repo.Prune()
-	if err != nil {
-		return nil, fmt.Errorf("pruning attempts from repo: %w", err)
-	}
-
-	for _, at := range ats {
-		if err := uc.ev.Send(at, event.ActionDelete); err != nil {
-			uc.logger.Error().
-				Err(fmt.Errorf("sending event: %w", err)).
-				Send()
-		}
-	}
-
-	return ats, nil
-}

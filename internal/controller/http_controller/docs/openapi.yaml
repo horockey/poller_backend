@@ -6,8 +6,6 @@ info:
 tags:
   - name: Polls management
   - name: Attempts management
-  - name: Attempts management (service)
-    description: For service use only
 
 paths:
   /poll:
@@ -283,32 +281,7 @@ paths:
           $ref: "#/components/responses/403"
         '500':
           $ref: "#/components/responses/500"
-  /prune_attempts:
-    delete:
-      tags: ["Attempts management (service)"]
-      description: Delete all attempts, which poll no longer exists
-      parameters:
-        - name: "X-Auth-Token"
-          in: header
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Attempt'
-        '400':
-          $ref: "#/components/responses/400"
-        '403':
-          $ref: "#/components/responses/403"
-        '500':
-          $ref: "#/components/responses/500"
-
+  
 components:
   responses:
     '400':

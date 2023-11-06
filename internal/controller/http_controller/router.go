@@ -52,12 +52,6 @@ func (ctrl *httpController) newRouter() *mux.Router {
 			ctrl.attemptPollIdGet,
 		},
 		{
-			"PruneAttemptsDelete",
-			http.MethodDelete,
-			"/prune_attempts",
-			ctrl.pruneAttemptsDelete,
-		},
-		{
 			"PollGet",
 			http.MethodGet,
 			"/poll",
