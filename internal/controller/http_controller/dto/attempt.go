@@ -32,7 +32,7 @@ func NewAttempt(a *model.Attempt) *Attempt {
 
 	return &Attempt{
 		ID:      a.ID,
-		Ts:      a.Ts.Format(time.RFC3339),
+		Ts:      a.TimeCreated.Format(time.RFC3339),
 		PollID:  a.PollID,
 		Answers: answers,
 	}
@@ -50,9 +50,9 @@ func (a *Attempt) ToModel() (*model.Attempt, error) {
 	}
 
 	return &model.Attempt{
-		ID:      a.ID,
-		Ts:      ts,
-		PollID:  a.PollID,
-		Answers: answers,
+		ID:          a.ID,
+		TimeCreated: ts,
+		PollID:      a.PollID,
+		Answers:     answers,
 	}, nil
 }
