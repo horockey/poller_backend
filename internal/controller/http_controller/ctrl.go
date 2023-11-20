@@ -12,10 +12,9 @@ import (
 	"github.com/rs/zerolog"
 )
 
-const shutdownTimeout = time.Second
-
 type httpController struct {
-	serv *http.Server
+	serv            *http.Server
+	shutdownTimeout time.Duration
 
 	hashSeed []byte
 
@@ -27,6 +26,7 @@ type httpController struct {
 
 func New(
 	addr string,
+	shutdownTimeout time.Duration,
 	hashSeed []byte,
 	attempts attempts_management.Usecase,
 	polls polls_management.Usecase,
@@ -36,10 +36,11 @@ func New(
 		serv: &http.Server{
 			Addr: addr,
 		},
-		hashSeed: hashSeed,
-		attempts: attempts,
-		polls:    polls,
-		logger:   logger,
+		shutdownTimeout: shutdownTimeout,
+		hashSeed:        hashSeed,
+		attempts:        attempts,
+		polls:           polls,
+		logger:          logger,
 	}
 	ctrl.serv.Handler = ctrl.newRouter()
 
@@ -47,6 +48,8 @@ func New(
 }
 
 func (ctrl *httpController) Start(ctx context.Context) error {
+	ctrl.logger.Info().Str("addr", ctrl.serv.Addr).Msg("HTTP controller started")
+
 	errs := make(chan error)
 	go func() {
 		err := ctrl.serv.ListenAndServe()
@@ -64,7 +67,7 @@ func (ctrl *httpController) Start(ctx context.Context) error {
 			resErr = fmt.Errorf("running context: %w", resErr)
 		}
 
-		sdCtx, cancel := context.WithTimeout(context.TODO(), shutdownTimeout)
+		sdCtx, cancel := context.WithTimeout(context.TODO(), ctrl.shutdownTimeout)
 		defer cancel()
 
 		if err := ctrl.serv.Shutdown(sdCtx); err != nil {

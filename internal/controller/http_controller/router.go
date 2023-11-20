@@ -1,14 +1,15 @@
 package http_controller
 
 import (
-	"embed"
 	"net/http"
+
+	_ "embed"
 
 	"github.com/gorilla/mux"
 )
 
-//go:embed docs/*
-var docs embed.FS
+//go:embed docs/index.html
+var docsHtml []byte
 
 type Route struct {
 	Name        string
@@ -90,7 +91,9 @@ func (ctrl *httpController) newRouter() *mux.Router {
 		Methods(http.MethodGet).
 		Path("/").
 		Name("Docs").
-		Handler(http.FileServer(http.FS(docs)))
+		Handler(http.HandlerFunc((func(w http.ResponseWriter, req *http.Request) {
+			w.Write(docsHtml)
+		})))
 
 	return router
 }
