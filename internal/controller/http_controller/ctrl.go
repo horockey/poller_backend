@@ -48,7 +48,7 @@ func New(
 }
 
 func (ctrl *httpController) Start(ctx context.Context) error {
-	ctrl.logger.Info().Str("addr", ctrl.serv.Addr).Msg("HTTP controller started")
+	ctrl.logger.Info().Str("addr", ctrl.serv.Addr).Msg("started")
 
 	errs := make(chan error)
 	go func() {

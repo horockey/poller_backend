@@ -34,15 +34,15 @@ func main() {
 	}
 
 	// Adapters
-	attemptActionEvent := zerolog_attempt_action.New(logger)
-	pollActionEvent := zerolog_poll_action.New(logger)
+	attemptActionEvent := zerolog_attempt_action.New(logger.With().Str("layer", "attemptActionEvent").Logger())
+	pollActionEvent := zerolog_poll_action.New(logger.With().Str("layer", "pollActionEvent").Logger())
 
 	attemptsRepo := inmemory_attempts.New()
 	pollsRepo := inmemory_polls.New()
 
 	// Usecase
-	attemptsUC := attempts_management_impl.New(attemptsRepo, attemptActionEvent, logger)
-	pollsUC := polls_management_impl.New(pollsRepo, pollActionEvent, logger)
+	attemptsUC := attempts_management_impl.New(attemptsRepo, attemptActionEvent, logger.With().Str("layer", "attemptsUC").Logger())
+	pollsUC := polls_management_impl.New(pollsRepo, pollActionEvent, logger.With().Str("layer", "pollsUC").Logger())
 
 	// Controller
 	ctrl := http_controller.New(
@@ -51,7 +51,7 @@ func main() {
 		[]byte(cfg.HashSeed),
 		attemptsUC,
 		pollsUC,
-		logger,
+		logger.With().Str("layer", "HTTP controller").Logger(),
 	)
 
 	ctx, cancel := signal.NotifyContext(
